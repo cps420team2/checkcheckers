@@ -1,0 +1,18 @@
+post /login
+Username:_____
+Password:_____
+
+post /getdb
+Username:_____
+
+post /getusers
+Username:_____
+
+post /getchecks
+Username:_____
+
+post /createcheck
+Username:_____
+check_num:_____
+check_date:_____ (formate yyyy-mm-dd)
+check_amount:_____
