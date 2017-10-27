@@ -1,0 +1,44 @@
+{{>mobile_header}}
+<body> 
+<section id="page1" data-role="page">
+  <header data-role="header">
+    <h1>Library</h1>
+    <a href="mobile_search" data-ajax="false">Search</a>
+  </header>
+  <div class="content" data-role="content">
+    <ul data-role="listview">
+      {{#each result}}
+      <li><a href="#b{{id}}">{{title}}</a></li>
+      {{/each}}
+      {{#if error}}
+      <li>{{error}}</li>
+      {{/if}}
+    </ul>
+  </div>
+  
+  <footer data-role="footer">
+     {{#if prev_show}}<a data-icon="arrow-l" data-role="button" href="mobile_searchresult?txtTitle={{{titleURL}}}&start={{{prev_start}}}" data-ajax="false">prev</a>{{/if}}
+     {{#if next_show}}<a data-icon="arrow-r" data-role="button" href="mobile_searchresult?txtTitle={{{titleURL}}}&start={{{next_start}}}" data-ajax="false">next</a>{{/if}}
+  </footer>
+</section>
+
+{{#each result}}
+
+<section id="b{{id}}" data-role="page">
+  <header data-role="header">
+    <h1>Details</h1>
+  </header>
+  <div class="content" >
+    <table>
+      <tr><th>Call #:</th><td> {{callNo}}</td></tr>
+      <tr><th>Title:</th><td>{{title}}</td></tr>
+      <tr><th>Author:</th><td> {{author}}</td>
+     </table>
+  </div>
+
+</section>
+
+{{/each}}
+
+</body>
+</html>

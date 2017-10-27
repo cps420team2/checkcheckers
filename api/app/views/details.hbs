@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<HTML>
+  <HEAD>
+    <title>Backwater Creek Community Library - Book Details</title>
+    <LINK href="res/styles.css" type="text/css" rel="stylesheet">
+
+  </HEAD>
+  <body link="#660000">
+
+<!-- begin header -->
+{{>desktop_header}}
+<!-- end header -->
+
+    <form method="get" action="maintain">
+
+      <table cellpadding="5" cellspacing="5" align="center" width="100%">
+{{#if book}}
+        <tr>
+          <td valign="top" align="right" width="200"><b>Title:</b></td>
+          <td valign="top">{{book.title}}</td>
+        </tr>
+
+        <tr>
+          <td valign="top" align="right"><b>Author:</b></td>
+          <td valign="top">{{book.author}}</td>
+        </tr>
+        <tr>
+          <td valign="top" align="right"><b>Additional Author:</b></td>
+          <td valign="top">{{book.addAuthor}}</td>
+
+        </tr>
+        <tr>
+          <td valign="top" align="right"><b>Call Number:</b></td>
+          <td valign="top">{{book.callNo}}</td>
+        </tr>
+        <tr>
+          <td valign="top" align="right"><b>Publication Info:</b></td>
+
+          <td valign="top">{{book.pubInfo}}</td>
+        </tr>
+        <tr>
+          <td valign="top" align="right"><b>Description:</b></td>
+          <td valign="top">{{book.descript}}</td>
+        </tr>
+        <tr>
+
+          <td valign="top" align="right"><b>Series:</b></td>
+          <td valign="top">{{book.series}}</td>
+        </tr>
+        <tr>
+          <td align="right" valign="top"><b>Subject Categories:</b></td>
+          <td valign="top">{{#each subjects}} {{Subject}}<br />{{/each}}</td>
+        </tr>
+{{/if}}
+        {{#if error}}
+        <tr>
+          <td align="right" valign="top"><b>Error:</b></td>
+          <td valign="top">{{error}}</td>
+        </tr>
+        {{/if}}
+      </table>
+      <P>&nbsp;</P>
+{{#if book}}
+      <P>
+        <input type="hidden" name="book_id" value="{{book.id}}">
+{{#if session.login}}
+        <input type="submit" name="Maintenance" value="Maintenance " /></P>
+{{/if}}
+{{/if}}
+    </form>
+  </body>
+</HTML>

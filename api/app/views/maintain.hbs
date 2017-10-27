@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<HTML>
+  <HEAD>
+    <title>BCCL - Book Details</title>
+    <LINK href="res/styles.css" type="text/css" rel="stylesheet">
+
+  </HEAD>
+  <body link="#660000">
+
+<!-- begin header -->
+{{>desktop_header}}
+<!-- end header -->
+
+    <form method="post" >
+
+      <table cellSpacing="5" cellPadding="5" width="100%" align="left">
+        {{#if error}}
+        <tr>
+          <td vAlign="top" align="right" width="200"><b>Error:</b></td>
+          <td vAlign="top">{{error}}</td>
+        </tr>
+        {{/if}}
+        <tr>
+          <td vAlign="top" align="right" width="200"><b>Title:</b></td>
+          <td vAlign="top"><textarea name="txtTitle" >{{book.title}}</textarea></td>
+        </tr>
+        <tr>
+          <td vAlign="top" align="right"><b>Author:</b></td>
+
+          <td vAlign="top"><input name="txtAuthor" type="text" value="{{book.author}}"  /></td>
+        </tr>
+        <tr>
+          <td vAlign="top" align="right"><b>Additional Author:</b></td>
+          <td vAlign="top"><input name="txtAddAuthor" type="text" value="{{book.addAuthor}}" /></td>
+        </tr>
+        <tr>
+          <td vAlign="top" align="right"><b>Call Number:</b></td>
+
+          <td vAlign="top"><input name="txtCallNo" type="text" value="{{book.callNo}}" /></td>
+        </tr>
+        <tr>
+          <td vAlign="top" align="right"><b>Publication Info:</b></td>
+          <td vAlign="top"><textarea name="txtPubInfo" >{{book.pubInfo}}</textarea></td>
+        </tr>
+        <tr>
+          <td style="HEIGHT: 57px" vAlign="top" align="right"><b>Description:</b></td>
+
+          <td vAlign="top"><textarea name="txtDesc" >{{book.descript}}</textarea></td>
+        </tr>
+        <tr>
+          <td vAlign="top" align="right"><b>Series:</b></td>
+          <td vAlign="top"><input name="txtSeries" type="text" id="tbSeries" value="{{book.series}}" /></td>
+        </tr>
+        <tr>
+          <input type="hidden" name="id" value="{{book.id}}">
+          <input type="hidden" name="updateCount" value="{{book.updateCount}}">
+          <td>&nbsp;</td>
+
+          <td align="left"><input type="submit" name="btnSave" value="Save"  />&nbsp;
+            <input type="submit" name="btnCancel" value="Cancel"  /></td>
+        </tr>
+      </table>
+    </form>
+  </body>
+</HTML>

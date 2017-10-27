@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<HTML>
+  <HEAD>
+    <title>Backwater Creek Community Library - Simple Search</title>
+    <LINK href="res/styles.css" type="text/css" rel="stylesheet">
+
+  </HEAD>
+  <body link="#660000">
+<!-- begin header -->
+{{>desktop_header}}
+<!-- end header -->
+    <form method="get" action="search" >
+
+      <P>Search by Title:
+        <input name="txtTitle" type="text" value="{{title}}"  />&nbsp;<input type="submit" name="btnSearch" value="Search" />&nbsp;
+      </P>
+      
+			{{#if error}}<p>{{{error}}}</p>{{/if}}
+{{#if result}}
+      <P>{{#if prev_show}}<a href="search?txtTitle={{{titleURL}}}&start={{{prev_start}}}">&lt;&lt;&nbsp;Prev</a>{{/if}} Page {{curr_page}} of {{max_page}} ({{matches}} matches) {{#if next_show}}<a href="search?txtTitle={{{titleURL}}}&start={{{next_start}}}">Next&nbsp;&gt;&gt;</a>{{/if}}</P>
+
+      <P><table id="tblResults" cellspacing="0" cellpadding="5" align="Left" bordercolor="Gray" border="0">
+	<tr>
+		<td align="Left" valign="Top" width="25%"><b>Author</b></td><td align="Left" valign="Top" width="75%"><b>Title</b></td>
+
+{{#each result}}
+	</tr><tr>
+		<td align="Left" valign="Top">{{author}}</td><td align="Left" valign="Top"><a href='details?book_id={{id}}' alt=''>{{title}}</a></td>
+	</tr>
+{{/each}}
+
+</table>
+{{/if}}
+      <br>
+      <br>
+      <P>&nbsp;</P>
+      <P>&nbsp;</P>
+
+      <P>&nbsp;</P>
+      <P>&nbsp;</P>
+    </form>
+  </body>
+</HTML>

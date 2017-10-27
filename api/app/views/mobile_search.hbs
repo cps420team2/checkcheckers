@@ -1,0 +1,17 @@
+{{>mobile_header}}
+<body> 
+<section id="page1" data-role="page">
+  <header data-role="header">
+    <h1>Library</h1>
+  </header>
+  <div class="content" data-role="content">
+    <form data-ajax="false" method="get" action="mobile_searchresult">
+      <input type="search" name="txtTitle" value="{{title}}">
+      <input type="submit" name="action" value="Search">
+    </form>
+  </div>
+  
+</section>
+
+</body>
+</html>
