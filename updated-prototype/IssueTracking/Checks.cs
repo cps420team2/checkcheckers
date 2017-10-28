@@ -8,11 +8,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using Microsoft.JScript;
 
 namespace Prototype
 {
     public partial class Checks : Form
     {
+
+        string dbName;
+
         int level;
         public Checks(int perm)
         {
@@ -49,6 +53,7 @@ namespace Prototype
                 }
             }
             */
+
         }
 
         private void On_newCheck_Click(object sender, EventArgs e)
