@@ -1,15 +1,19 @@
 post /login
 Username:_____
 Password:_____
+Ex. .\curl.exe -X POST localhost:3000/login -d "Username=apric&Password=password"
 
 post /getdb
 Username:_____
+Ex. .\curl.exe -X POST localhost:3000/getdb -d "Username=apric"
 
 post /getusers
 Username:_____
+Ex. .\curl.exe -X POST localhost:3000/getusers -d "Username=apric"
 
 post /getchecks
 Username:_____
+Ex. .\curl.exe -X POST localhost:3000/getchecks -d "Username=apric"
 
 post /createcheck
 Username:_____
