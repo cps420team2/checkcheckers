@@ -36,6 +36,30 @@ Check.getChecks = function(dbname, callback) {
     });
 }
 
+Check.getSingleCheck = function(dbname, Check_ID, callback) {
+    db.companydb(dbname).getConnection(function(err, connection) { 
+        if (err) {
+            callback(err, null);
+            return;
+        }
+
+        var sql = 'SELECT * FROM Get_Checks WHERE Check_Paid = ? AND Check_id = ?';
+        sql = mysql.format(sql, [0, Check_ID]);
+        connection.query(sql, function(error, data) {
+            connection.release();
+            if (error) {
+                callback(error, null);
+                return;
+            }
+            if (data.length === 0) {
+                callback('Check not found.', null);
+                return;
+            }
+            callback(null, data);
+        });
+    });
+}
+
 Check.createCheck = function(dbname, check_num, check_date, check_amount, clerk_id, acc_id, callback) {
     db.companydb(dbname).getConnection(function(err, connection) { 
         if (err) {

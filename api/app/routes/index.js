@@ -6,6 +6,7 @@ var mysql = require('mysql');
 var Item = require('../models/item');
 var User = require('../models/user');
 var Check = require('../models/check');
+var Store = require('../models/store');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {  
@@ -127,14 +128,30 @@ router.post('/getusers', function (req, res, next){
     });
 });
 
+// Check functions
 router.post('/getchecks', function (req, res, next){
     User.getdb(req.body.Username, function(err, dbname){
         if (dbname) {
-            Check.getChecks(dbname, function(error, user_list) {
-                if (user_list) {
-                    res.send({error:null, checks:user_list});
+            Check.getChecks(dbname, function(error, check_list) {
+                if (check_list) {
+                    res.send({error:null, checks:check_list});
                 } else {
                     res.send({error:error, checks:null});
+                }
+            });
+        } else {
+            res.send({error:err, checks:null});        }
+    });
+});
+
+router.post('/getsinglecheck', function (req, res, next){
+    User.getdb(req.body.Username, function(err, dbname){
+        if (dbname) {
+            Check.getSingleCheck(dbname, req.body.Check_ID, function(error, check) {
+                if (check) {
+                    res.send({error:null, check:check});
+                } else {
+                    res.send({error:error, check:null});
                 }
             });
         } else {
@@ -146,16 +163,64 @@ router.post('/createcheck', function (req, res, next){
     User.getdb(req.body.Username, function(err, dbname){
         if (dbname) {
             Check.createCheck(dbname, req.body.check_num, req.body.check_date, req.body.check_amount, 
-                1, 1, function(error, user_list) {
+                1, 1, function(error, check_list) {
                     
-                if (user_list) {
-                    res.send({error:null, checks:user_list});
+                if (check_list) {
+                    res.send({error:null, checks:check_list});
                 } else {
                     res.send({error:error, checks:null});
                 }
             });
         } else {
             res.send({error:err, checks:null});        }
+    });
+});
+
+// Store functions
+router.post('/getstores', function (req, res, next){
+    User.getdb(req.body.Username, function(err, dbname){
+        if (dbname) {
+            Store.getStores(dbname, function(error, store_list) {
+                if (store_list) {
+                    res.send({error:null, stores:store_list});
+                } else {
+                    res.send({error:error, stores:null});
+                }
+            });
+        } else {
+            res.send({error:err, stores:null});        }
+    });
+});
+
+router.post('/getsinglestore', function (req, res, next){
+    User.getdb(req.body.Username, function(err, dbname){
+        if (dbname) {
+            Store.getSingleStore(dbname, req.body.Store_ID, function(error, store) {
+                if (store) {
+                    res.send({error:null, store:store});
+                } else {
+                    res.send({error:error, store:null});
+                }
+            });
+        } else {
+            res.send({error:err, store:null});        }
+    });
+});
+
+router.post('/createstore', function (req, res, next){
+    User.getdb(req.body.Username, function(err, dbname){
+        if (dbname) {
+            Store.createStore(dbname, req.body.Store_Name, req.body.Country, req.body.Address, 
+                req.body.City, req.body.State, req.body.Zip, function(error, store) {
+                    
+                if (store) {
+                    res.send({error:null, store:store});
+                } else {
+                    res.send({error:error, store:null});
+                }
+            });
+        } else {
+            res.send({error:err, store:null});        }
     });
 });
 

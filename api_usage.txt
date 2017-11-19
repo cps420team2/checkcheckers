@@ -15,8 +15,32 @@ post /getchecks
 Username:_____
 Ex. .\curl.exe -X POST localhost:3000/getchecks -d "Username=apric"
 
+post /getsinglecheck
+Username:_____
+Check_ID:_____
+Ex. .\curl.exe -X POST localhost:3000/getsinglecheck -d "Username=apric&Check_ID=1"
+
 post /createcheck
 Username:_____
 check_num:_____
 check_date:_____ (formate yyyy-mm-dd)
 check_amount:_____
+
+post /getstores
+Username:_____
+Ex. .\curl.exe -X POST localhost:3000/getstores -d "Username=apric"
+
+post /getsinglestore
+Username:_____
+Store:_____
+Ex. .\curl.exe -X POST localhost:3000/getsinglestore -d "Username=apric&Store_ID=1"
+
+post /createstore
+Username:_____
+Store_Name:_____
+Country:_____
+Address:_____
+City:_____
+State:_____
+Zip:_____
+Ex. .\curl.exe -X POST localhost:3000/createstore -d "Username=apric&Store_Name=BJU&Country=USA&Address=1700 Wade Hampton Blvd&City=Greenville&State=SC&Zip=29642"
