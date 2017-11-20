@@ -44,7 +44,7 @@ Ex. .\curl.exe -X POST localhost:3000/getstores -d "Username=apric"
 
 post /getsinglestore
 Username:_____
-Store:_____
+Store_ID:_____
 Ex. .\curl.exe -X POST localhost:3000/getsinglestore -d "Username=apric&Store_ID=1"
 
 post /createstore
@@ -57,7 +57,7 @@ State:_____
 Zip:_____
 Ex. .\curl.exe -X POST localhost:3000/createstore -d "Username=apric&Store_Name=BJU&Country=USA&Address=1700 Wade Hampton Blvd&City=Greenville&State=SC&Zip=29642"
 
-post /createstore
+post /editstore
 Username:_____
 Store_ID:_____
 Store_Name:_____(optional)
@@ -67,3 +67,27 @@ City:_____(optional)
 State:_____(optional)
 Zip:_____(optional)
 Ex. .\curl.exe -X POST localhost:3000/editstore -d "Username=apric&Store_ID=2&Store_Name=NotBJU&Zip=29607"
+
+post /getclerks
+Username:_____
+Ex. .\curl.exe -X POST localhost:3000/getclerks -d "Username=apric"
+
+post /getsingleclerk
+Username:_____
+Clerk_ID:_____
+Ex. .\curl.exe -X POST localhost:3000/getsingleclerk -d "Username=apric&Clerk_ID=1"
+
+post /createclerk
+Username:_____
+F_Name:_____
+L_Name:_____
+Store_ID:_____
+Ex. .\curl.exe -X POST localhost:3000/createclerk -d "Username=apric&F_Name=Joe&L_Name=Smith&Store_ID=1"
+
+post /editclerk
+Username:_____
+Clerk_ID:_____
+F_Name:_____(optional)
+L_Name:_____(optional)
+Store_ID:_____(optional)
+Ex. .\curl.exe -X POST localhost:3000/editclerk -d "Username=apric&Clerk_ID=1&F_Name=Jill"
