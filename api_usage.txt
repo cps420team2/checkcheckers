@@ -91,3 +91,33 @@ F_Name:_____(optional)
 L_Name:_____(optional)
 Store_ID:_____(optional)
 Ex. .\curl.exe -X POST localhost:3000/editclerk -d "Username=apric&Clerk_ID=1&F_Name=Jill"
+
+post /getbanks
+Username:_____
+Ex. .\curl.exe -X POST localhost:3000/getbanks -d "Username=apric"
+
+post /getsinglebank
+Username:_____
+Bank_ID:_____
+Ex. .\curl.exe -X POST localhost:3000/getsinglebank -d "Username=apric&Bank_ID=1"
+
+post /createbank
+Username:_____
+Bank_Name:_____
+Country:_____
+Address:_____
+City:_____
+State:_____
+Zip:_____
+Ex. .\curl.exe -X POST localhost:3000/createbank -d "Username=apric&Bank_Name=BJU&Country=USA&Address=1700 Wade Hampton Blvd&City=Greenville&State=SC&Zip=29642"
+
+post /editbank
+Username:_____
+Bank_ID:_____
+Bank_Name:_____(optional)
+Country:_____(optional)
+Address:_____(optional)
+City:_____(optional)
+State:_____(optional)
+Zip:_____(optional)
+Ex. .\curl.exe -X POST localhost:3000/editbank -d "Username=apric&Bank_ID=2&Bank_Name=Not A Real Bank&Zip=29607"

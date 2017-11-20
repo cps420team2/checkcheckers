@@ -8,6 +8,7 @@ var User = require('../models/user');
 var Check = require('../models/check');
 var Store = require('../models/store');
 var Clerk = require('../models/clerk');
+var Bank = require('../models/bank');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {  
@@ -261,7 +262,7 @@ router.post('/editstore', function (req, res, next){
     });
 });
 
-// Store functions
+// Clerk functions
 router.post('/getclerks', function (req, res, next){
     User.getdb(req.body.Username, function(err, dbname){
         if (dbname) {
@@ -323,6 +324,71 @@ router.post('/editclerk', function (req, res, next){
             });
         } else {
             res.send({error:err, clerk:null});        }
+    });
+});
+
+// Bank functions
+router.post('/getbanks', function (req, res, next){
+    User.getdb(req.body.Username, function(err, dbname){
+        if (dbname) {
+            Bank.getBanks(dbname, function(error, bank_list) {
+                if (bank_list) {
+                    res.send({error:null, banks:bank_list});
+                } else {
+                    res.send({error:error, banks:null});
+                }
+            });
+        } else {
+            res.send({error:err, banks:null});        }
+    });
+});
+
+router.post('/getsinglebank', function (req, res, next){
+    User.getdb(req.body.Username, function(err, dbname){
+        if (dbname) {
+            Bank.getSingleBank(dbname, req.body.Bank_ID, function(error, bank) {
+                if (bank) {
+                    res.send({error:null, bank:bank});
+                } else {
+                    res.send({error:error, bank:null});
+                }
+            });
+        } else {
+            res.send({error:err, bank:null});        }
+    });
+});
+
+router.post('/createbank', function (req, res, next){
+    User.getdb(req.body.Username, function(err, dbname){
+        if (dbname) {
+            Bank.createBank(dbname, req.body.Bank_Name, req.body.Country, req.body.Address, 
+                req.body.City, req.body.State, req.body.Zip, function(error, bank) {
+                    
+                if (bank) {
+                    res.send({error:null, bank:bank});
+                } else {
+                    res.send({error:error, bank:null});
+                }
+            });
+        } else {
+            res.send({error:err, bank:null});        }
+    });
+});
+
+router.post('/editbank', function (req, res, next){
+    User.getdb(req.body.Username, function(err, dbname){
+        if (dbname) {
+            Bank.editBank(dbname, req.body.Bank_ID, req.body.Bank_Name, req.body.Country, req.body.Address, 
+                req.body.City, req.body.State, req.body.Zip, function(error, bank) {
+                    
+                if (bank) {
+                    res.send({error:null, bank:bank});
+                } else {
+                    res.send({error:error, bank:null});
+                }
+            });
+        } else {
+            res.send({error:err, bank:null});        }
     });
 });
 
