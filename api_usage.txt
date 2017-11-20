@@ -121,3 +121,38 @@ City:_____(optional)
 State:_____(optional)
 Zip:_____(optional)
 Ex. .\curl.exe -X POST localhost:3000/editbank -d "Username=apric&Bank_ID=2&Bank_Name=Not A Real Bank&Zip=29607"
+
+post /getaccounts
+Username:_____
+Ex. .\curl.exe -X POST localhost:3000/getaccounts -d "Username=apric"
+
+post /getsingleaccount
+Username:____
+Acc_ID:_____
+Ex. .\curl.exe -X POST localhost:3000/getsingleaccount -d "Username=apric&Acc_ID=1"
+
+post /createaccount
+Username:_____
+Acc_Number:_____
+F_Name:_____
+L_Name:_____
+Acc_Address:_____
+Acc_City:_____
+Acc_State:_____
+Acc_Zip:_____
+Bank_Id:_____
+Routing_Number
+Ex. .\curl.exe -X POST localhost:3000/createaccount -d "Username=apric&Acc_Number=43054320&F_Name=Andrew&L_Name=Moneyman&Acc_Address=543 Fake St&Acc_City=Anderson&Acc_State=SC&Acc_Zip=29542&Bank_Id=1&Routing_Number=437194595"
+
+post /editaccount
+Username:_____
+Acc_ID:_____
+Acc_Number:_____(optional)
+F_Name:_____(optional)
+L_Name:_____(optional)
+Acc_Address:_____(optional)
+Acc_City:_____(optional)
+Acc_State:_____(optional)
+Acc_Zip:_____(optional)
+Bank_Id:_____(optional)
+Ex. .\curl.exe -X POST localhost:3000/editaccount -d "Username=apric&Acc_ID=2&L_Name=LotsOmoneyman"

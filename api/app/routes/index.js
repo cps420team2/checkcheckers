@@ -9,6 +9,7 @@ var Check = require('../models/check');
 var Store = require('../models/store');
 var Clerk = require('../models/clerk');
 var Bank = require('../models/bank');
+var Account = require('../models/account');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {  
@@ -389,6 +390,72 @@ router.post('/editbank', function (req, res, next){
             });
         } else {
             res.send({error:err, bank:null});        }
+    });
+});
+
+// Account functions
+router.post('/getaccounts', function (req, res, next){
+    User.getdb(req.body.Username, function(err, dbname){
+        if (dbname) {
+            Account.getAccounts(dbname, function(error, account_list) {
+                if (account_list) {
+                    res.send({error:null, accounts:account_list});
+                } else {
+                    res.send({error:error, accounts:null});
+                }
+            });
+        } else {
+            res.send({error:err, accounts:null});        }
+    });
+});
+
+router.post('/getsingleaccount', function (req, res, next){
+    User.getdb(req.body.Username, function(err, dbname){
+        if (dbname) {
+            Account.getSingleAccount(dbname, req.body.Acc_ID, function(error, account) {
+                if (account) {
+                    res.send({error:null, account:account});
+                } else {
+                    res.send({error:error, account:null});
+                }
+            });
+        } else {
+            res.send({error:err, account:null});        }
+    });
+});
+
+router.post('/createaccount', function (req, res, next){
+    User.getdb(req.body.Username, function(err, dbname){
+        if (dbname) {
+            Account.createAccount(dbname, req.body.Acc_Number, req.body.F_Name, req.body.L_Name, req.body.Acc_Address, req.body.Acc_City, 
+                req.body.Acc_State, req.body.Acc_Zip, req.body.Bank_Id, req.body.Routing_Number, function(error, account) {
+                    
+                if (account) {
+                    res.send({error:null, account:account});
+                } else {
+                    res.send({error:error, account:null});
+                }
+            });
+        } else {
+            res.send({error:err, account:null});        }
+    });
+});
+
+router.post('/editaccount', function (req, res, next){
+    User.getdb(req.body.Username, function(err, dbname){
+        if (dbname) {
+            Account.editAccount(dbname, req.body.Acc_ID, req.body.Acc_Number, req.body.F_Name, req.body.L_Name, req.body.Acc_Address, 
+                req.body.Acc_City, req.body.Acc_State, req.body.Acc_Zip, req.body.Bank_Id, req.body.Routing_Number, 
+                function(error, account) {
+                    
+                if (account) {
+                    res.send({error:null, account:account});
+                } else {
+                    res.send({error:error, account:null});
+                }
+            });
+        } else {
+            res.send({error:err, account:null});        }
     });
 });
 
