@@ -7,6 +7,7 @@ var Item = require('../models/item');
 var User = require('../models/user');
 var Check = require('../models/check');
 var Store = require('../models/store');
+var Clerk = require('../models/clerk');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {  
@@ -163,16 +164,35 @@ router.post('/createcheck', function (req, res, next){
     User.getdb(req.body.Username, function(err, dbname){
         if (dbname) {
             Check.createCheck(dbname, req.body.check_num, req.body.check_date, req.body.check_amount, 
-                1, 1, function(error, check_list) {
+                1, 1, function(error, check) {
                     
-                if (check_list) {
-                    res.send({error:null, checks:check_list});
+                if (check) {
+                    res.send({error:null, check:check});
                 } else {
-                    res.send({error:error, checks:null});
+                    res.send({error:error, check:null});
                 }
             });
         } else {
-            res.send({error:err, checks:null});        }
+            res.send({error:err, check:null});
+        }
+    });
+});
+
+router.post('/editcheck', function (req, res, next){
+    User.getdb(req.body.Username, function(err, dbname){
+        if (dbname) {
+            Check.editCheck(dbname, req.body.check_id, req.body.check_num, req.body.check_date, req.body.check_amount, 
+                req.body.clerk_id, req.body.acc_id, function(error, check) {
+                    
+                if (check) {
+                    res.send({error:null, check:check});
+                } else {
+                    res.send({error:error, check:null});
+                }
+            });
+        } else {
+            res.send({error:err, check:null});
+        }
     });
 });
 
@@ -221,6 +241,88 @@ router.post('/createstore', function (req, res, next){
             });
         } else {
             res.send({error:err, store:null});        }
+    });
+});
+
+router.post('/editstore', function (req, res, next){
+    User.getdb(req.body.Username, function(err, dbname){
+        if (dbname) {
+            Store.editStore(dbname, req.body.Store_ID, req.body.Store_Name, req.body.Country, req.body.Address, 
+                req.body.City, req.body.State, req.body.Zip, function(error, store) {
+                    
+                if (store) {
+                    res.send({error:null, store:store});
+                } else {
+                    res.send({error:error, store:null});
+                }
+            });
+        } else {
+            res.send({error:err, store:null});        }
+    });
+});
+
+// Store functions
+router.post('/getclerks', function (req, res, next){
+    User.getdb(req.body.Username, function(err, dbname){
+        if (dbname) {
+            Clerk.getClerks(dbname, function(error, clerk_list) {
+                if (clerk_list) {
+                    res.send({error:null, clerks:clerk_list});
+                } else {
+                    res.send({error:error, clerks:null});
+                }
+            });
+        } else {
+            res.send({error:err, clerks:null});        }
+    });
+});
+
+router.post('/getsingleclerk', function (req, res, next){
+    User.getdb(req.body.Username, function(err, dbname){
+        if (dbname) {
+            Clerk.getSingleClerk(dbname, req.body.Clerk_ID, function(error, clerk) {
+                if (clerk) {
+                    res.send({error:null, clerk:clerk});
+                } else {
+                    res.send({error:error, clerk:null});
+                }
+            });
+        } else {
+            res.send({error:err, clerk:null});        }
+    });
+});
+
+router.post('/createclerk', function (req, res, next){
+    User.getdb(req.body.Username, function(err, dbname){
+        if (dbname) {
+            Clerk.createClerk(dbname, req.body.F_Name, req.body.L_Name, req.body.Store_ID, 
+                function(error, clerk) {
+                    
+                if (clerk) {
+                    res.send({error:null, clerk:clerk});
+                } else {
+                    res.send({error:error, clerk:null});
+                }
+            });
+        } else {
+            res.send({error:err, clerk:null});        }
+    });
+});
+
+router.post('/editclerk', function (req, res, next){
+    User.getdb(req.body.Username, function(err, dbname){
+        if (dbname) {
+            Clerk.editClerk(dbname, req.body.Clerk_ID, req.body.F_Name, req.body.L_Name, req.body.Store_ID, 
+                function(error, clerk) {
+                    
+                if (clerk) {
+                    res.send({error:null, clerk:clerk});
+                } else {
+                    res.send({error:error, clerk:null});
+                }
+            });
+        } else {
+            res.send({error:err, clerk:null});        }
     });
 });
 

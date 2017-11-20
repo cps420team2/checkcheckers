@@ -25,6 +25,18 @@ Username:_____
 check_num:_____
 check_date:_____ (formate yyyy-mm-dd)
 check_amount:_____
+clerk_id:_____
+acc_id:_____
+
+post /editcheck
+Username:_____
+check_id:_____
+check_num:_____(optional)
+check_date:_____(optional)
+check_amount:_____(optional)
+clerk_id:_____(optional)
+acc_id:_____(optional)
+Ex. .\curl.exe -X POST localhost:3000/editcheck -d "Username=apric&check_id=2&check_amount=87"
 
 post /getstores
 Username:_____
@@ -44,3 +56,14 @@ City:_____
 State:_____
 Zip:_____
 Ex. .\curl.exe -X POST localhost:3000/createstore -d "Username=apric&Store_Name=BJU&Country=USA&Address=1700 Wade Hampton Blvd&City=Greenville&State=SC&Zip=29642"
+
+post /createstore
+Username:_____
+Store_ID:_____
+Store_Name:_____(optional)
+Country:_____(optional)
+Address:_____(optional)
+City:_____(optional)
+State:_____(optional)
+Zip:_____(optional)
+Ex. .\curl.exe -X POST localhost:3000/editstore -d "Username=apric&Store_ID=2&Store_Name=NotBJU&Zip=29607"
