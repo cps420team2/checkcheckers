@@ -46,12 +46,13 @@ namespace Prototype
 
         private void On_OK_Click(object sender, EventArgs e)
         {
+            /*
             if (!GetLoginAsync(unameText.Text, passText.Text).Result)
             {
                 MessageBox.Show("Error. Incorrect Credentials.");
                 this.Close();
             }
-      
+            */
             //show next window, pass permissions as level
             //idea modified from https://stackoverflow.com/questions/5548746/c-sharp-open-a-new-form-then-close-the-current-form
             this.Hide();
