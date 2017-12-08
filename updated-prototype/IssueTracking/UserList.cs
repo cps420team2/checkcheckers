@@ -20,35 +20,47 @@ namespace Prototype
 
         private void Users_load(object sender, EventArgs e)
         {
-            /*
-            string dbconnect = "Server=localhost;Database=ccproject;Uid=root;Pwd=Password;";
-            MySqlConnection connection = new MySqlConnection(dbconnect);
-            MySqlCommand cmd = new MySqlCommand();
-            using (connection)
+            DataGridViewButtonColumn col = new DataGridViewButtonColumn();
+            col.UseColumnTextForButtonValue = true;
+            col.Text = "Edit";
+            col.Name = ""; //This will cause some problems with edit and delete double check this message ::: button[num] == line[num]
+            DataGridViewButtonColumn del = new DataGridViewButtonColumn();
+            del.UseColumnTextForButtonValue = true;
+            del.Text = "Delete";
+            del.Name = ""; //This will cause some problems with edit and delete double check this message ::: button[num] == line[num]
+
+            DataTable test = new DataTable("info");
+            test.Columns.Add("First Name");
+            test.Columns.Add("Last Name");
+            test.Columns.Add("AccountType");
+            test.Rows.Add("Andrew", "Price", "Administrator");
+            test.Rows.Add("Brad", "Mays", "Manager");
+
+
+            dataGrid.DataSource = test;
+            dataGrid.Columns.Add(col);
+            dataGrid.Columns.Add(del);
+
+         }
+
+        //taken from https://stackoverflow.com/questions/10769316/add-a-button-in-a-new-column-to-all-rows-in-a-datagrid
+        void dataGridView1_EditingControlShowing(object sender,
+                    DataGridViewEditingControlShowingEventArgs e)
+        {
+            if (e.Control is Button)
             {
-                connection.Open();
-                try
+                Button btn = e.Control as Button;
+                if (btn.Name == "cmEdit")
                 {
-                    cmd = connection.CreateCommand();
-                    cmd.CommandText = "Select * from users";
-                    MySqlDataAdapter cData = new MySqlDataAdapter(cmd);
-                    DataSet cDS = new DataSet();
-                    cData.Fill(cDS);
-                    BindingSource bSource = new BindingSource();
-                    bSource.DataSource = cDS;
-                    dataGrid.DataSource = bSource;
-                    cData.Update(cDS);
+                    btn.Click -= new EventHandler(On_editUser_Click);
+                    btn.Click += new EventHandler(On_editUser_Click);
                 }
-                catch (Exception)
+                else
                 {
-                    MessageBox.Show("An Error has occured!\nPlease try again in a short time.\nIf the problem persists, contact your Manager or System Administrator.");
-                }
-                finally
-                {
-                    connection.Close();
+                    btn.Click -= new EventHandler(On_delUser_Click);
+                    btn.Click += new EventHandler(On_delUser_Click);
                 }
             }
-            */
         }
 
         private void On_newUser_Click(object sender, EventArgs e)
