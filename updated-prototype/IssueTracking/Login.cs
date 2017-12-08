@@ -8,57 +8,57 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net.Http;
+using System.Net;
+using System.Collections.Specialized;
+
 
 namespace Prototype
 {
-
     public partial class Login : Form
     {
-        private static async Task<bool> GetLoginAsync(string user, string pass)
+        private static string GetLoginAsync(string user, string pass)
         {
-            var values = new Dictionary<string, string>
+            using (WebClient client = new WebClient())
             {
-               { "username", user },
-               { "password", pass }
-            };
-            var content = new FormUrlEncodedContent(values);
+                //MessageBox.Show("in web client");
+                byte[] response =
+                client.UploadValues("http://localhost:3000/login", new NameValueCollection()
+                {
+                   { "Username", user },
+                   { "Password", pass }
+                });
 
-            var response = await client.PostAsync(requestUri("file:\\\\\\C:\\Users\\djpbj\\Desktop\\School\\420\\FinalProject\\checkcheckers\api\app\\models\\user.js"), content);
-
-            var responseString = await response.Content.ReadAsStringAsync();
-
-            return false;
+                //MessageBox.Show("getting respons");
+                string result = System.Text.Encoding.UTF8.GetString(response);
+                //MessageBox.Show(result);
+                return result;
+            }
         }
 
-        private static string requestUri(string v)
-        {
-            throw new NotImplementedException();
-        }
-
-        private static readonly HttpClient client = new HttpClient();
         int permissions;
 
-        public Login(int level)
+        public Login()
         {
-            permissions = level;
             InitializeComponent();
         }
 
         private void On_OK_Click(object sender, EventArgs e)
         {
-            /*
-            if (!GetLoginAsync(unameText.Text, passText.Text).Result)
+            string test = GetLoginAsync(unameText.Text, passText.Text);
+            if (test.Contains("true"))
             {
-                MessageBox.Show("Error. Incorrect Credentials.");
-                this.Close();
+                MessageBox.Show("Welcome!");
+                //show next window, pass permissions as level
+                //idea modified from https://stackoverflow.com/questions/5548746/c-sharp-open-a-new-form-then-close-the-current-form
+                this.Hide();
+                var log = new Checks(unameText.Text);
+                log.FormClosed += (s, args) => this.Close();
+                log.Show();
             }
-            */
-            //show next window, pass permissions as level
-            //idea modified from https://stackoverflow.com/questions/5548746/c-sharp-open-a-new-form-then-close-the-current-form
-            this.Hide();
-            var log = new Checks(2);
-            log.FormClosed += (s, args) => this.Close();
-            log.Show();
+            else
+            {
+                MessageBox.Show("Incorrect creditials");
+            }
         }
 
             private void On_lCancel_Click(object sender, EventArgs e)
