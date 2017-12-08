@@ -8,6 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net.Http;
+using System.Net;
+using System.Collections.Specialized;
+
 
 namespace Prototype
 {
@@ -25,21 +28,32 @@ namespace Prototype
 
         public static async Task GetLoginAsync(string user, string pass)
         {
+            /*
             var values = new Dictionary<string, string>
             {
-               { "username", user },
-               { "password", pass }
+               { "Username", user },
+               { "Password", pass }
             };
             var content = new FormUrlEncodedContent(values);
-
-            var response = await client.PostAsync(requestUri("file://C:/users/Admin-00/Desktop/Sync/checkcheckers/api/app/models/user.js"), content);
-
+            
+            var response = await client.PostAsync("http://localhost:3000/login", content);
+            
             var responseString = await response.Content.ReadAsStringAsync();
-        }
+            */
+            using (WebClient client = new WebClient())
+            {
+                MessageBox.Show("in web client");
+                byte[] response =
+                client.UploadValues("http://localhost:3000/login", new NameValueCollection()
+                {
+                   { "Username", user },
+                   { "Password", pass }
+                });
 
-        private static string requestUri(string v)
-        {
-            throw new NotImplementedException();
+                MessageBox.Show("getting respons");
+                string result = System.Text.Encoding.UTF8.GetString(response);
+                MessageBox.Show(result);
+            }
         }
 
         private void On_OK_Click(object sender, EventArgs e)
