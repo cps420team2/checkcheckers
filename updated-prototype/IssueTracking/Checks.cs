@@ -9,18 +9,16 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using Microsoft.JScript;
+using System.Net;
+using System.Collections.Specialized;
+
 
 namespace Prototype
 {
     public partial class Checks : Form
     {
-
-        string dbName;
-
-        int level;
-        public Checks(int perm)
+        public Checks(string user)
         {
-            level = perm;
             InitializeComponent();
         }
 

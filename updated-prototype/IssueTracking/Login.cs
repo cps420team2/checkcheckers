@@ -14,26 +14,13 @@ using System.Collections.Specialized;
 
 namespace Prototype
 {
-
     public partial class Login : Form
     {
         private static string GetLoginAsync(string user, string pass)
         {
-            /*
-            var values = new Dictionary<string, string>
-            {
-               { "Username", user },
-               { "Password", pass }
-            };
-            var content = new FormUrlEncodedContent(values);
-            
-            var response = await client.PostAsync("http://localhost:3000/login", content);
-            
-            var responseString = await response.Content.ReadAsStringAsync();
-            */
             using (WebClient client = new WebClient())
             {
-                MessageBox.Show("in web client");
+                //MessageBox.Show("in web client");
                 byte[] response =
                 client.UploadValues("http://localhost:3000/login", new NameValueCollection()
                 {
@@ -41,37 +28,37 @@ namespace Prototype
                    { "Password", pass }
                 });
 
-                MessageBox.Show("getting respons");
+                //MessageBox.Show("getting respons");
                 string result = System.Text.Encoding.UTF8.GetString(response);
-                MessageBox.Show(result);
+                //MessageBox.Show(result);
                 return result;
             }
         }
 
-        private static readonly HttpClient client = new HttpClient();
         int permissions;
 
-        public Login(int level)
+        public Login()
         {
-            permissions = level;
             InitializeComponent();
         }
 
         private void On_OK_Click(object sender, EventArgs e)
         {
-            /*
-            if (!GetLoginAsync(unameText.Text, passText.Text).Result)
+            string test = GetLoginAsync(unameText.Text, passText.Text);
+            if (test.Contains("true"))
             {
-                MessageBox.Show("Error. Incorrect Credentials.");
-                this.Close();
+                MessageBox.Show("Welcome!");
+                //show next window, pass permissions as level
+                //idea modified from https://stackoverflow.com/questions/5548746/c-sharp-open-a-new-form-then-close-the-current-form
+                this.Hide();
+                var log = new Checks(unameText.Text);
+                log.FormClosed += (s, args) => this.Close();
+                log.Show();
             }
-            */
-            //show next window, pass permissions as level
-            //idea modified from https://stackoverflow.com/questions/5548746/c-sharp-open-a-new-form-then-close-the-current-form
-            this.Hide();
-            var log = new Checks(2);
-            log.FormClosed += (s, args) => this.Close();
-            log.Show();
+            else
+            {
+                MessageBox.Show("Incorrect creditials");
+            }
         }
 
             private void On_lCancel_Click(object sender, EventArgs e)
