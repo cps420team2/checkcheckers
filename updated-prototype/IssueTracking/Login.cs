@@ -10,12 +10,15 @@ using System.Windows.Forms;
 using System.Net.Http;
 using System.Net;
 using System.Collections.Specialized;
-
+using System.Text.RegularExpressions;
 
 namespace Prototype
 {
     public partial class Login : Form
     {
+
+        string dbname;
+
         private static string GetLoginAsync(string user, string pass)
         {
             using (WebClient client = new WebClient())
@@ -35,7 +38,28 @@ namespace Prototype
             }
         }
 
-        int permissions;
+        private static string GetDbName(string user)
+        {
+            using (WebClient client = new WebClient())
+            {
+                //MessageBox.Show("in web client");
+                byte[] response =
+                client.UploadValues("http://localhost:3000/getdb", new NameValueCollection()
+                {
+                   { "Username", user }
+                });
+
+                //MessageBox.Show("getting respons");
+                string result = System.Text.Encoding.UTF8.GetString(response);
+                //MessageBox.Show(result);
+                int end = result.LastIndexOf('\"');
+                string test = result.Substring(0, end);
+                end = test.LastIndexOf('\"');
+                result = test.Substring(end+1);
+                //MessageBox.Show(test);
+                return result;
+            }
+        }
 
         public Login()
         {
@@ -47,11 +71,13 @@ namespace Prototype
             string test = GetLoginAsync(unameText.Text, passText.Text);
             if (test.Contains("true"))
             {
-                MessageBox.Show("Welcome!");
+                //MessageBox.Show("Welcome!");
+
+                dbname = GetDbName(unameText.Text);
                 //show next window, pass permissions as level
                 //idea modified from https://stackoverflow.com/questions/5548746/c-sharp-open-a-new-form-then-close-the-current-form
                 this.Hide();
-                var log = new Checks(unameText.Text);
+                var log = new Checks(unameText.Text, dbname);
                 log.FormClosed += (s, args) => this.Close();
                 log.Show();
             }

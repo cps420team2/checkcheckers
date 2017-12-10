@@ -8,14 +8,40 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using System.Net;
+using System.Collections.Specialized;
 
 namespace Prototype
 {
     public partial class UserList : Form
     {
-        public UserList()
+        string user;
+        string dbname;
+
+        private static string GetdbInfo(string call, NameValueCollection stuff)
+        {
+            using (WebClient client = new WebClient())
+            {
+                //MessageBox.Show("in web client");
+                byte[] response =
+                client.UploadValues("http://localhost:3000/" + call , stuff);
+
+                //MessageBox.Show("getting respons");
+                string result = System.Text.Encoding.UTF8.GetString(response);
+
+                MessageBox.Show(result);
+                return result;
+            }
+        }
+
+        public UserList(string uname, string db)
         {
             InitializeComponent();
+            user = uname;
+            dbname = db;
+
+            string results = GetdbInfo("getusers", new NameValueCollection { { "Username", user } });
+       
         }
 
         private void Users_load(object sender, EventArgs e)
@@ -30,16 +56,12 @@ namespace Prototype
             del.Name = ""; //This will cause some problems with edit and delete double check this message ::: button[num] == line[num]
 
             DataTable test = new DataTable("info");
-            test.Columns.Add("First Name");
-            test.Columns.Add("Last Name");
-            test.Columns.Add("AccountType");
-            test.Rows.Add("Andrew", "Price", "Administrator");
-            test.Rows.Add("Brad", "Mays", "Manager");
 
 
-            dataGrid.DataSource = test;
             dataGrid.Columns.Add(col);
             dataGrid.Columns.Add(del);
+            dataGrid.DataSource = test;
+
 
          }
 
@@ -88,7 +110,7 @@ namespace Prototype
             //show next window, pass permissions as level
             //idea modified from https://stackoverflow.com/questions/5548746/c-sharp-open-a-new-form-then-close-the-current-form
             this.Hide();
-            var log = new Checks(2);
+            var log = new Checks(user, dbname);
             log.FormClosed += (s, args) => this.Close();
             log.Show();
         }

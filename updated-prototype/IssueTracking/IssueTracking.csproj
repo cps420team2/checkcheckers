@@ -172,14 +172,5 @@
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="app.js" />
-    <Content Include="booksubject.js" />
-    <Content Include="check.js" />
-    <Content Include="db.js" />
-    <Content Include="index.js" />
-    <Content Include="item.js" />
-    <Content Include="user.js" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

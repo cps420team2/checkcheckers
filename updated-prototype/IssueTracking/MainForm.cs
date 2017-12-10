@@ -31,30 +31,11 @@ namespace IssueTracking
         {
             //idea modified from https://stackoverflow.com/questions/5548746/c-sharp-open-a-new-form-then-close-the-current-form
             this.Hide();
-            var log = new Prototype.Login(0);
+            var log = new Prototype.Login();
             log.FormClosed += (s, args) => this.Close();
             log.Show();
 
         }
-        /*
-        private void On_Analyst_Click(object sender, EventArgs e)
-        {
-            //idea modified from https://stackoverflow.com/questions/5548746/c-sharp-open-a-new-form-then-close-the-current-form
-            this.Hide();
-            var log = new Prototype.Login(2);
-            log.FormClosed += (s, args) => this.Close();
-            log.Show();
-        }
-
-        private void On_Administrator_Click(object sender, EventArgs e)
-        {
-            //idea modified from https://stackoverflow.com/questions/5548746/c-sharp-open-a-new-form-then-close-the-current-form
-            this.Hide();
-            var log = new Prototype.Login(1);
-            log.FormClosed += (s, args) => this.Close();
-            log.Show();
-        }
-        */
 
     }
 }
