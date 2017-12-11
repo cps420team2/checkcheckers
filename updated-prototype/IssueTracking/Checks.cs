@@ -17,19 +17,33 @@ namespace Prototype
 {
     public partial class Checks : Form
     {
-
         string user;
         string dbname;
+        DataTable test = new DataTable("Checks");
+
+        private static string GetdbInfo(string call, NameValueCollection stuff)
+        {
+            using (WebClient client = new WebClient())
+            {
+                //MessageBox.Show("in web client");
+                byte[] response =
+                client.UploadValues("http://localhost:3000/" + call, stuff);
+
+                //MessageBox.Show("getting respons");
+                string result = System.Text.Encoding.UTF8.GetString(response);
+
+                MessageBox.Show(result);
+                return result;
+            }
+        }
+
 
         public Checks(string uname, string db)
         {
             InitializeComponent();
-            dbname = db;
             user = uname;
-        }
+            dbname = db;
 
-        private void Checks_load(object sender, EventArgs e)
-        {
             DataGridViewButtonColumn col = new DataGridViewButtonColumn();
             col.UseColumnTextForButtonValue = true;
             col.Text = "Edit";
@@ -39,11 +53,14 @@ namespace Prototype
             del.Text = "Delete";
             del.Name = ""; //This will cause some problems with edit and delete double check this message ::: button[num] == line[num]
 
-            DataTable test = new DataTable("users");
-
-
             dataGrid.Columns.Add(col);
             dataGrid.Columns.Add(del);
+        }
+
+        private void Checks_load(object sender, EventArgs e)
+        {
+            string results = GetdbInfo("getchecks", new NameValueCollection { { "Username", user } });
+
             dataGrid.DataSource = test;
 
         }

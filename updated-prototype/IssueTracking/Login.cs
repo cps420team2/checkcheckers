@@ -23,18 +23,26 @@ namespace Prototype
         {
             using (WebClient client = new WebClient())
             {
-                //MessageBox.Show("in web client");
-                byte[] response =
-                client.UploadValues("http://localhost:3000/login", new NameValueCollection()
+                try
                 {
-                   { "Username", user },
-                   { "Password", pass }
-                });
+                    //MessageBox.Show("in web client");
+                    byte[] response =
+                    client.UploadValues("http://localhost:3000/login", new NameValueCollection()
+                    {
+                       { "Username", user },
+                       { "Password", pass }
+                    });
 
-                //MessageBox.Show("getting respons");
-                string result = System.Text.Encoding.UTF8.GetString(response);
-                //MessageBox.Show(result);
-                return result;
+                    //MessageBox.Show("getting respons");
+                    string result = System.Text.Encoding.UTF8.GetString(response);
+                    //MessageBox.Show(result);
+                    return result;
+                }
+                catch(Exception e)
+                {
+                    MessageBox.Show("Bad things have happened.\n\n\n\n" + e.ToString());
+                    return "null";
+                }
             }
         }
 

@@ -17,6 +17,7 @@ namespace Prototype
     {
         string user;
         string dbname;
+        DataTable test = new DataTable("User");
 
         private static string GetdbInfo(string call, NameValueCollection stuff)
         {
@@ -40,12 +41,6 @@ namespace Prototype
             user = uname;
             dbname = db;
 
-            string results = GetdbInfo("getusers", new NameValueCollection { { "Username", user } });
-       
-        }
-
-        private void Users_load(object sender, EventArgs e)
-        {
             DataGridViewButtonColumn col = new DataGridViewButtonColumn();
             col.UseColumnTextForButtonValue = true;
             col.Text = "Edit";
@@ -55,11 +50,24 @@ namespace Prototype
             del.Text = "Delete";
             del.Name = ""; //This will cause some problems with edit and delete double check this message ::: button[num] == line[num]
 
-            DataTable test = new DataTable("info");
-
-
             dataGrid.Columns.Add(col);
             dataGrid.Columns.Add(del);
+
+            try
+            {
+                //Users_load(this, EventArgs e);
+            }
+            catch(Exception e)
+            {
+                MessageBox.Show("an error has occured.\n\n\n\n\n" + e.ToString());
+            }
+            
+        }
+
+        private void Users_load(object sender, EventArgs e)
+        {
+            string results = GetdbInfo("getusers", new NameValueCollection { { "Username", user } });
+
             dataGrid.DataSource = test;
 
 
