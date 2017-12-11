@@ -40,7 +40,7 @@ namespace Prototype
                 }
                 catch(Exception e)
                 {
-                    MessageBox.Show("Bad things have happened.\n\n\n\n" + e.ToString());
+                    //MessageBox.Show("Bad things have happened.\n\n\n\n" + e.ToString());
                     return "null";
                 }
             }

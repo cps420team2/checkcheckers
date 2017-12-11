@@ -8,84 +8,61 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using System.Net;
+using System.Collections.Specialized;
 
 namespace Prototype
 {
     public partial class NewUser : Form
     {
         Dictionary<string, int> stores = new Dictionary<string, int>();
+        string user;
 
-        public NewUser()
+        private static string GetdbInfo(string call, NameValueCollection stuff)
         {
-            InitializeComponent();
+            using (WebClient client = new WebClient())
+            {
+                //MessageBox.Show("in web client");
+                byte[] response =
+                client.UploadValues("http://localhost:3000/" + call, stuff);
+
+                //MessageBox.Show("getting respons");
+                string result = System.Text.Encoding.UTF8.GetString(response);
+
+                MessageBox.Show(result);
+                return result;
+            }
         }
 
-        private void NewUser_Load(object sender, EventArgs e)
+        public NewUser(string un)
         {
-            string dbconnect = "Server=localhost;Database=ccproject;Uid=root;Pwd=Password;";
-            MySqlConnection connection = new MySqlConnection(dbconnect);
-            MySqlCommand cmd = new MySqlCommand();
-            using (connection)
-            {
-                connection.Open();
-                try
-                {
-                    cmd = connection.CreateCommand();
-                    cmd.CommandText = "Select * from storefront";
-                    MySqlDataReader rd = cmd.ExecuteReader();
-                    while (rd.Read())
-                    {
-                        stores.Add(rd.GetString("Address"), rd.GetInt32("sfID"));
-                    }
-                }
-                catch (Exception)
-                {
-                    MessageBox.Show("An Error has occured!\nPlease try again in a short time.\nIf the problem persists, contact your Manager or System Administrator.");
-                }
-                finally
-                {
-                    connection.Close();
-                }
-            }
-            this.uStore.DataSource = stores;
+            InitializeComponent();
+            user = un;
         }
 
         private void On_submit_click(object sender, EventArgs e)
         {
-            if (fName.Text == "" || lName.Text == "" || uName.Text == "" || password.Text == "" || EmpNo.Text == "")
+            if (fName.Text == "" || lName.Text == "" || uStore.Text == "")
             {
-                MessageBox.Show("Please fill all fields completely");
+                MessageBox.Show("Incomplete data. Please supply a valid argument in each feild.");
             }
-            else
+            try
             {
-                int role = 0;
-                if (radioButton1.Checked || radioButton2.Checked) { role = 1; }
-                else if (radioButton3.Checked) { role = 2; }
-                else { role = 0; }
-                string dbconnect = "Server=localhost;Database=ccproject;Uid=root;Pwd=Password;";
-                MySqlConnection conn = new MySqlConnection(dbconnect);
-                MySqlCommand cmd = new MySqlCommand();
-                using (conn)
-                {
-                    conn.Open();
-                    try
-                    {
-                        cmd = conn.CreateCommand();
-                        cmd.CommandText = "Insert into users (FirstName, LastName, EmpNo, LoginName, Password, Role, UserStore)" +
-                            "Values (" + fName.Text + lName.Text + Int32.Parse(EmpNo.Text) + uName.Text + password.Text + role + stores[uStore.Text] + ")";
+                int x = Int32.Parse(uStore.Text);
 
-                        cmd.CommandType = CommandType.Text;
-                        cmd.ExecuteNonQuery();
-                    }
-                    catch (Exception eex)
+                string result = GetdbInfo("createclerk", new NameValueCollection
                     {
-                        MessageBox.Show("An error with the values was detected. Please try again.\nIf the problem persists, please contact your manager or adminstrator.\n\n\n" + eex.ToString());
-                    }
-                    finally
-                    {
-                        conn.Close();
-                    }
-                }
+                      { "Username", user },
+                      { "F_Name", fName.Text },
+                      { "L_Name", lName.Text },
+                      { "Store_ID", uStore.Text }
+                    } );
+
+                MessageBox.Show("Success!");
+            }
+            catch(Exception ef)
+            {
+                MessageBox.Show("An error has occured.\n\n\n\n" + ef.ToString());
             }
         }
 

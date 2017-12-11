@@ -17,7 +17,7 @@ namespace Prototype
     {
         string user;
         string dbname;
-        DataTable test = new DataTable("User");
+        //DataTable test = new DataTable("User");
 
         private static string GetdbInfo(string call, NameValueCollection stuff)
         {
@@ -25,12 +25,12 @@ namespace Prototype
             {
                 //MessageBox.Show("in web client");
                 byte[] response =
-                client.UploadValues("http://localhost:3000/" + call , stuff);
+                client.UploadValues("http://localhost:3000/" + call, stuff);
 
                 //MessageBox.Show("getting respons");
                 string result = System.Text.Encoding.UTF8.GetString(response);
 
-                MessageBox.Show(result);
+                //MessageBox.Show(result);
                 return result;
             }
         }
@@ -44,34 +44,95 @@ namespace Prototype
             DataGridViewButtonColumn col = new DataGridViewButtonColumn();
             col.UseColumnTextForButtonValue = true;
             col.Text = "Edit";
-            col.Name = ""; //This will cause some problems with edit and delete double check this message ::: button[num] == line[num]
+            col.Name = "Edit User"; //This will cause some problems with edit and delete double check this message ::: button[num] == line[num]
             DataGridViewButtonColumn del = new DataGridViewButtonColumn();
             del.UseColumnTextForButtonValue = true;
             del.Text = "Delete";
-            del.Name = ""; //This will cause some problems with edit and delete double check this message ::: button[num] == line[num]
+            del.Name = "Delete User"; //This will cause some problems with edit and delete double check this message ::: button[num] == line[num]
+            DataGridViewButtonColumn fname = new DataGridViewButtonColumn();
+            del.UseColumnTextForButtonValue = false;
+            del.Text = "First Name";
+            del.Name = "First Name"; //This will cause some problems with edit and delete double check this message ::: button[num] == line[num]
+            DataGridViewButtonColumn lname = new DataGridViewButtonColumn();
+            del.UseColumnTextForButtonValue = false;
+            del.Text = "Last Name";
+            del.Name = "Last Name"; //This will cause some problems with edit and delete double check this message ::: button[num] == line[num]
+            DataGridViewButtonColumn pos = new DataGridViewButtonColumn();
+            del.UseColumnTextForButtonValue = false;
+            del.Text = "Position";
+            del.Name = "Position"; //This will cause some problems with edit and delete double check this message ::: button[num] == line[num]
+            DataGridViewButtonColumn compy = new DataGridViewButtonColumn();
+            del.UseColumnTextForButtonValue = false;
+            del.Text = "Company Name";
+            del.Name = "Compnay Name"; //This will cause some problems with edit and delete double check this message ::: button[num] == line[num]
 
+
+            dataGrid.Columns.Add(fname);
+            dataGrid.Columns.Add(lname);
+            dataGrid.Columns.Add(pos);
+            dataGrid.Columns.Add(compy);
             dataGrid.Columns.Add(col);
             dataGrid.Columns.Add(del);
 
-            try
+            MessageBox.Show("Users Loaded.\n\nPlease press refresh to view recent changes.");
+        }
+
+        private void FillData(string info)
+        {
+
+            info = info.Substring(info.IndexOf(':') + 1);
+            string fname = "";
+            string lname = "";
+            string pos = "";
+            string compy = "";
+            int start = 0;
+            int end = 0;
+            int i = 0;
+            info = info.Substring(info.IndexOf(':') + 1);
+            while (info.Contains("Company_Name"))
             {
-                //Users_load(this, EventArgs e);
+                while (i < 4)
+                {
+
+                    start = info.IndexOf(':');
+                    if (info.IndexOf('\"') < start) { info = info.Substring(1); end = info.IndexOf('\"'); start += 2; }
+                    else { end = info.IndexOf('\"'); start += 1; }
+                    switch
+                    (i)
+                    {
+                        case 0:
+                            fname = info.Substring(start, end - 1);
+                            break;
+                        case 1:
+                            lname = info.Substring(start, end - 1);
+                            break;
+                        case 2:
+                            pos = info.Substring(start, end - 1);
+                            break;
+                        case 3:
+                            compy = info.Substring(start, end - 1);
+                            break;
+                    }
+                    ++i;
+                    info = info.Substring(end - 1);
+                }
+                this.dataGrid.Rows.Add(fname, lname, pos, compy);
             }
-            catch(Exception e)
-            {
-                MessageBox.Show("an error has occured.\n\n\n\n\n" + e.ToString());
-            }
-            
         }
 
         private void Users_load(object sender, EventArgs e)
         {
-            string results = GetdbInfo("getusers", new NameValueCollection { { "Username", user } });
-
-            dataGrid.DataSource = test;
-
-
-         }
+            try
+            {
+                string results = GetdbInfo("getusers", new NameValueCollection { { "Username", user } });
+                //string clerk_results = GetdbInfo("getclerks", new NameValueCollection { { "Username", user } }); //-----leads to 404 error
+                FillData(results);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error has occured:\n\n\n" + ex);
+            }
+        }
 
         //taken from https://stackoverflow.com/questions/10769316/add-a-button-in-a-new-column-to-all-rows-in-a-datagrid
         void dataGridView1_EditingControlShowing(object sender,
@@ -80,7 +141,7 @@ namespace Prototype
             if (e.Control is Button)
             {
                 Button btn = e.Control as Button;
-                if (btn.Name == "cmEdit")
+                if (btn.Name == "Edit")
                 {
                     btn.Click -= new EventHandler(On_editUser_Click);
                     btn.Click += new EventHandler(On_editUser_Click);
@@ -95,12 +156,12 @@ namespace Prototype
 
         private void On_newUser_Click(object sender, EventArgs e)
         {
-            new NewUser().ShowDialog();
+            new NewUser(user).ShowDialog();
         }
 
         private void On_editUser_Click(object sender, EventArgs e)
         {
-            new ChangePassword().ShowDialog();
+
         }
 
         private void On_delUser_Click(object sender, EventArgs e)
