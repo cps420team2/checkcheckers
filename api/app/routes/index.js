@@ -279,6 +279,21 @@ router.post('/getclerks', function (req, res, next){
     });
 });
 
+router.post('/getclerkswithstoreinfo', function (req, res, next){
+    User.getdb(req.body.Username, function(err, dbname){
+        if (dbname) {
+            Clerk.getClerkswithStoreInfo(dbname, function(error, clerk_list) {
+                if (clerk_list) {
+                    res.send({error:null, clerks:clerk_list});
+                } else {
+                    res.send({error:error, clerks:null});
+                }
+            });
+        } else {
+            res.send({error:err, clerks:null});        }
+    });
+});
+
 router.post('/getsingleclerk', function (req, res, next){
     User.getdb(req.body.Username, function(err, dbname){
         if (dbname) {

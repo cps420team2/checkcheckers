@@ -77,6 +77,10 @@ post /getclerks
 Username:_____
 Ex. .\curl.exe -X POST localhost:3000/getclerks -d "Username=apric"
 
+post /getclerkswithstoreinfo
+Username:_____
+Ex. .\curl.exe -X POST localhost:3000/getclerkswithstoreinfo -d "Username=apric"
+
 post /getsingleclerk
 Username:_____
 Clerk_ID:_____
