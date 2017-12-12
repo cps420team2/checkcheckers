@@ -122,7 +122,6 @@ C:\Users\djpbj\Desktop\School\420\FinalProject\checkcheckers\updated-prototype\I
 C:\Users\djpbj\Desktop\School\420\FinalProject\checkcheckers\updated-prototype\IssueTracking\obj\Debug\Prototype.ChangePassword.resources
 C:\Users\djpbj\Desktop\School\420\FinalProject\checkcheckers\updated-prototype\IssueTracking\obj\Debug\Prototype.NewCheck.resources
 C:\Users\djpbj\Desktop\School\420\FinalProject\checkcheckers\updated-prototype\IssueTracking\obj\Debug\Prototype.NewUser.resources
-C:\Users\djpbj\Desktop\School\420\FinalProject\checkcheckers\updated-prototype\IssueTracking\obj\Debug\Prototype.UserList.resources
 C:\Users\djpbj\Desktop\School\420\FinalProject\checkcheckers\updated-prototype\IssueTracking\obj\Debug\Prototype.Checks.resources
 C:\Users\djpbj\Desktop\School\420\FinalProject\checkcheckers\updated-prototype\IssueTracking\obj\Debug\IssueTracking.Form1.resources
 C:\Users\djpbj\Desktop\School\420\FinalProject\checkcheckers\updated-prototype\IssueTracking\obj\Debug\IssueTracking.Form2.resources
@@ -134,3 +133,4 @@ C:\Users\djpbj\Desktop\School\420\FinalProject\checkcheckers\updated-prototype\I
 C:\Users\djpbj\Desktop\School\420\FinalProject\checkcheckers\updated-prototype\IssueTracking\obj\Debug\IssueTracking.csproj.CoreCompileInputs.cache
 C:\Users\djpbj\Desktop\School\420\FinalProject\checkcheckers\updated-prototype\IssueTracking\obj\Debug\Prototype.exe
 C:\Users\djpbj\Desktop\School\420\FinalProject\checkcheckers\updated-prototype\IssueTracking\obj\Debug\Prototype.pdb
+C:\Users\djpbj\Desktop\School\420\FinalProject\checkcheckers\updated-prototype\IssueTracking\obj\Debug\Prototype.User.resources

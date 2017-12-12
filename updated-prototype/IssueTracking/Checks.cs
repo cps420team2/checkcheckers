@@ -19,7 +19,7 @@ namespace Prototype
     {
         string user;
         string dbname;
-        DataTable test = new DataTable("Checks");
+        DataTable test = new DataTable("Users");
 
         private static string GetdbInfo(string call, NameValueCollection stuff)
         {
