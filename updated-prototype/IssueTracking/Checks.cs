@@ -9,56 +9,69 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using Microsoft.JScript;
+using System.Net;
+using System.Collections.Specialized;
+
 
 namespace Prototype
 {
     public partial class Checks : Form
     {
-
-        string dbName;
-
-        int level;
-        public Checks(int perm)
+        public Checks(string user)
         {
-            level = perm;
             InitializeComponent();
         }
 
         private void Checks_load(object sender, EventArgs e)
         {
-            /*
-            string dbconnect = "Server=localhost;Database=ccproject;Uid=root;Pwd=Password;";
-            MySqlConnection connection = new MySqlConnection(dbconnect);
-            MySqlCommand cmd;
-            using (connection)
-            {
-                connection.Open();
-                try
-                {
-                    cmd = connection.CreateCommand();
-                    cmd.CommandText = "Select * from badchecks";
-                    MySqlDataAdapter cData = new MySqlDataAdapter(cmd);
-                    DataSet cDS = new DataSet();
-                    cData.Fill(cDS);
-                    dataGrid.DataSource = cDS.Tables[0].DefaultView;
-                    cData.Update(cDS);
-                }
-                catch (Exception)
-                {
-                    MessageBox.Show("An Error has occured!\nPlease try again in a short time.\nIf the problem persists, contact your Manager or System Administrator.");
-                }
-                finally
-                {
-                    connection.Close();
-                }
-            }
-            */
+            DataGridViewButtonColumn col = new DataGridViewButtonColumn();
+            col.UseColumnTextForButtonValue = true;
+            col.Text = "Edit";
+            col.Name = ""; //This will cause some problems with edit and delete double check this message ::: button[num] == line[num]
+            DataGridViewButtonColumn del = new DataGridViewButtonColumn();
+            del.UseColumnTextForButtonValue = true;
+            del.Text = "Delete";
+            del.Name = ""; //This will cause some problems with edit and delete double check this message ::: button[num] == line[num]
+
+            DataTable test = new DataTable("info");
+            test.Columns.Add("Date");
+            test.Columns.Add("Name");
+            test.Columns.Add("Routing Number");
+            test.Columns.Add("Account Number");
+            test.Columns.Add("Check Number");
+            test.Columns.Add("Letters Sent");
+            test.Rows.Add("11-11-17","John Doe",111222333,000123456789, 1 ,1);
+            test.Rows.Add("9-9-16", "Betty Smith", 444555666, 000123458888, 3, 2);
+
+            dataGrid.Columns.Add(col);
+            dataGrid.Columns.Add(del);
+            dataGrid.DataSource = test;
 
         }
 
         private void On_newCheck_Click(object sender, EventArgs e)
         {
             new NewCheck().ShowDialog();
+        }
+
+        //taken from https://stackoverflow.com/questions/10769316/add-a-button-in-a-new-column-to-all-rows-in-a-datagrid
+        void dataGridView1_EditingControlShowing(object sender,
+                    DataGridViewEditingControlShowingEventArgs e)
+        {
+            if (e.Control is Button)
+            {
+                Button btn = e.Control as Button;
+                if (btn.Name == "cmEdit")
+                {
+                    btn.Click -= new EventHandler(On_editCheck_Click);
+                    btn.Click += new EventHandler(On_editCheck_Click);
+                }
+                else
+                {
+                    btn.Click -= new EventHandler(On_delCheck_Click);
+                    btn.Click += new EventHandler(On_delCheck_Click);
+                }
+            }
         }
 
         private void On_editCheck_Click(object sender, EventArgs e)
@@ -69,31 +82,7 @@ namespace Prototype
         private void On_delCheck_Click(object sender, EventArgs e)
         {
             string value = dataGrid.CurrentRow.Cells[0].Value.ToString();
-            /*
-            string query = $"DELETE FROM issue WHERE Issue_id={value};";
-            string dbconnect = "Server=localhost;Database=ccproject;Uid=root;Pwd=Password;";
-            MySqlConnection connection = new MySqlConnection(dbconnect);
-
-            using (connection)
-            {
-                connection.Open();
-                try
-                {
-                    using (MySqlCommand command = connection.CreateCommand())
-                    {
-                        command.CommandText = query;
-                        command.ExecuteNonQuery();
-                    }
-                }
-                finally
-                {
-                    if (connection.State == ConnectionState.Open)
-                    {
-                        connection.Close();
-                    }
-                }
-            }
-            */
+            
         }
 
         private void On_Users_Click(object sender, EventArgs e)
@@ -113,37 +102,6 @@ namespace Prototype
         private void On_Cancel_Click(object sender, EventArgs e)
         {
             this.Close();
-        }
-
-        private void On_refresh_click(object sender, EventArgs e)
-        {
-            /*
-            string dbconnect = "Server=localhost;Database=ccproject;Uid=root;Pwd=Password;";
-            MySqlConnection connection = new MySqlConnection(dbconnect);
-            MySqlCommand cmd;
-            using (connection)
-            {
-                connection.Open();
-                try
-                {
-                    cmd = connection.CreateCommand();
-                    cmd.CommandText = "Select * from badchecks";
-                    MySqlDataAdapter cData = new MySqlDataAdapter(cmd);
-                    DataSet cDS = new DataSet();
-                    cData.Fill(cDS);
-                    dataGrid.DataSource = cDS.Tables[0].DefaultView;
-                    cData.Update(cDS);
-                }
-                catch (Exception)
-                {
-                    MessageBox.Show("An Error has occured!\nPlease try again in a short time.\nIf the problem persists, contact your Manager or System Administrator.");
-                }
-                finally
-                {
-                    connection.Close();
-                }
-            }
-            */
         }
     }
 }

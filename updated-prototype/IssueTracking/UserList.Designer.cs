@@ -30,8 +30,6 @@
         {
             this.dataGrid = new System.Windows.Forms.DataGridView();
             this.cNewButton = new System.Windows.Forms.Button();
-            this.cEditButton = new System.Windows.Forms.Button();
-            this.delButton = new System.Windows.Forms.Button();
             this.cmCancelButton = new System.Windows.Forms.Button();
             this.refresh = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
@@ -56,24 +54,6 @@
             this.cNewButton.UseVisualStyleBackColor = true;
             this.cNewButton.Click += new System.EventHandler(this.On_newUser_Click);
             // 
-            // cEditButton
-            // 
-            this.cEditButton.Location = new System.Drawing.Point(93, 25);
-            this.cEditButton.Name = "cEditButton";
-            this.cEditButton.Size = new System.Drawing.Size(75, 23);
-            this.cEditButton.TabIndex = 2;
-            this.cEditButton.Text = "Edit";
-            this.cEditButton.UseVisualStyleBackColor = true;
-            // 
-            // delButton
-            // 
-            this.delButton.Location = new System.Drawing.Point(174, 25);
-            this.delButton.Name = "delButton";
-            this.delButton.Size = new System.Drawing.Size(75, 23);
-            this.delButton.TabIndex = 3;
-            this.delButton.Text = "Delete";
-            this.delButton.UseVisualStyleBackColor = true;
-            // 
             // cmCancelButton
             // 
             this.cmCancelButton.Location = new System.Drawing.Point(744, 572);
@@ -86,21 +66,23 @@
             // 
             // refresh
             // 
-            this.refresh.Location = new System.Drawing.Point(336, 25);
+            this.refresh.Location = new System.Drawing.Point(174, 25);
             this.refresh.Name = "refresh";
             this.refresh.Size = new System.Drawing.Size(75, 23);
             this.refresh.TabIndex = 6;
             this.refresh.Text = "Refresh";
             this.refresh.UseVisualStyleBackColor = true;
+            this.refresh.Click += new System.EventHandler(this.Users_load);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(255, 25);
+            this.button1.Location = new System.Drawing.Point(93, 25);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 7;
             this.button1.Text = "Checks";
             this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.On_checks_clicked);
             // 
             // UserList
             // 
@@ -110,8 +92,6 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.refresh);
             this.Controls.Add(this.cmCancelButton);
-            this.Controls.Add(this.delButton);
-            this.Controls.Add(this.cEditButton);
             this.Controls.Add(this.cNewButton);
             this.Controls.Add(this.dataGrid);
             this.Name = "UserList";
@@ -125,8 +105,6 @@
 
         private System.Windows.Forms.DataGridView dataGrid;
         private System.Windows.Forms.Button cNewButton;
-        private System.Windows.Forms.Button cEditButton;
-        private System.Windows.Forms.Button delButton;
         private System.Windows.Forms.Button cmCancelButton;
         private System.Windows.Forms.Button refresh;
         private System.Windows.Forms.Button button1;
