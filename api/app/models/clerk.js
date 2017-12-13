@@ -4,23 +4,18 @@ var db = require('../config/db');
 
 var mysql = require('mysql');
 
-function Check(checkstuff) {
-    this.checkstuff
+function Clerk(clerkstuff) {
+    this.clerkstuff
 }
 
-Check.add = function() {
-
-}
-
-Check.getChecks = function(dbname, callback) {
+Clerk.getClerks = function(dbname, callback) {
     db.companydb(dbname).getConnection(function(err, connection) { 
         if (err) {
             callback(err, null);
             return;
         }
 
-        var sql = 'SELECT * FROM Get_Checks WHERE Check_Paid = ?';
-        sql = mysql.format(sql, 0);
+        var sql = 'SELECT * FROM Clerk';
         connection.query(sql, function(error, data) {
             connection.release();
             if (error) {
@@ -28,7 +23,7 @@ Check.getChecks = function(dbname, callback) {
                 return;
             }
             if (data.length === 0) {
-                callback('No checks found.', null);
+                callback('No clerks found.', null);
                 return;
             }
             callback(null, data);
@@ -36,15 +31,14 @@ Check.getChecks = function(dbname, callback) {
     });
 }
 
-Check.getSingleCheck = function(dbname, Check_ID, callback) {
+Clerk.getClerkswithStoreInfo = function(dbname, callback) {
     db.companydb(dbname).getConnection(function(err, connection) { 
         if (err) {
             callback(err, null);
             return;
         }
 
-        var sql = 'SELECT * FROM Get_Checks WHERE Check_Paid = ? AND Check_id = ?';
-        sql = mysql.format(sql, [0, Check_ID]);
+        var sql = 'SELECT * FROM team2db.Clerk LEFT JOIN team2db.Store ON Clerk.Store_Id = Store.Store_Id';
         connection.query(sql, function(error, data) {
             connection.release();
             if (error) {
@@ -52,7 +46,7 @@ Check.getSingleCheck = function(dbname, Check_ID, callback) {
                 return;
             }
             if (data.length === 0) {
-                callback('Check not found.', null);
+                callback('No clerks found.', null);
                 return;
             }
             callback(null, data);
@@ -60,15 +54,39 @@ Check.getSingleCheck = function(dbname, Check_ID, callback) {
     });
 }
 
-Check.createCheck = function(dbname, check_num, check_date, check_amount, clerk_id, acc_id, callback) {
+Clerk.getSingleClerk = function(dbname, Clerk_ID, callback) {
     db.companydb(dbname).getConnection(function(err, connection) { 
         if (err) {
             callback(err, null);
             return;
         }
 
-        var sql = 'INSERT INTO CheckInfo(Check_Number, Check_Date, Check_Amount, Clerk_Id, Acc_Id) VALUES (?, ?, ?, ?, ?)';
-        sql = mysql.format(sql, [check_num, check_date, check_amount, clerk_id, acc_id]);
+        var sql = 'SELECT * FROM Clerk WHERE Clerk_Id = ?';
+        sql = mysql.format(sql, [Clerk_ID]);
+        connection.query(sql, function(error, data) {
+            connection.release();
+            if (error) {
+                callback(error, null);
+                return;
+            }
+            if (data.length === 0) {
+                callback('Clerk not found.', null);
+                return;
+            }
+            callback(null, data);
+        });
+    });
+}
+
+Clerk.createClerk = function(dbname, F_Name, L_Name, Store_Id, callback) {
+    db.companydb(dbname).getConnection(function(err, connection) { 
+        if (err) {
+            callback(err, null);
+            return;
+        }
+
+        var sql = 'INSERT INTO Clerk(F_Name, L_Name, Store_Id) VALUES (?, ?, ?)';
+        sql = mysql.format(sql, [F_Name, L_Name, Store_Id]);
         connection.query(sql, function(error, data) {
             connection.release();
             if (error) {
@@ -76,7 +94,7 @@ Check.createCheck = function(dbname, check_num, check_date, check_amount, clerk_
                 return;
             }
             if (data.AffectedRows === 0) {
-                callback('No check added.', null);
+                callback('No Clerk added.', null);
                 return;
             }
             callback(null, data);
@@ -84,32 +102,20 @@ Check.createCheck = function(dbname, check_num, check_date, check_amount, clerk_
     });
 }
 
-Check.editCheck = function(dbname, check_id, check_num, check_date, check_amount, clerk_id, acc_id, check_paid, callback) {
+Clerk.editClerk = function(dbname, Clerk_Id, F_Name, L_Name, Store_Id, callback) {
     var nonNulls = [];
     var field_names = [];
-    if (check_num != null) {
-        nonNulls.push(check_num);
-        field_names.push("Check_Number = ?");
+    if (F_Name != null) {
+        nonNulls.push(F_Name);
+        field_names.push("F_Name = ?");
     }
-    if (check_date != null) {
-        nonNulls.push(check_date);
-        field_names.push("Check_Date = ?");
+    if (L_Name != null) {
+        nonNulls.push(L_Name);
+        field_names.push("L_Name = ?");
     }
-    if (check_amount != null) {
-        nonNulls.push(check_amount);
-        field_names.push("Check_Amount = ?");
-    }
-    if (clerk_id != null) {
-        nonNulls.push(clerk_id);
-        field_names.push("Clerk_Id = ?");
-    }
-    if (acc_id != null) {
-        nonNulls.push(acc_id);
-        field_names.push("Acc_Id = ?");
-    }
-    if (check_paid != null) {
-        nonNulls.push(check_paid);
-        field_names.push("Check_Paid = ?");
+    if (Store_Id != null) {
+        nonNulls.push(Store_Id);
+        field_names.push("Store_Id = ?");
     }
 
     if (nonNulls.length == 0) {
@@ -123,8 +129,8 @@ Check.editCheck = function(dbname, check_id, check_num, check_date, check_amount
             return;
         }
         
-        nonNulls.push(check_id)
-        var sql = 'UPDATE CheckInfo SET ' + field_names.join(", ") + " WHERE Check_ID = ?"
+        nonNulls.push(Clerk_Id)
+        var sql = 'UPDATE Clerk SET ' + field_names.join(", ") + " WHERE Clerk_Id = ?"
         sql = mysql.format(sql, nonNulls);
         connection.query(sql, function(error, data) {
             connection.release();
@@ -133,7 +139,7 @@ Check.editCheck = function(dbname, check_id, check_num, check_date, check_amount
                 return;
             }
             if (data.AffectedRows === 0) {
-                callback('The check was not updated.', null);
+                callback('The clerk was not updated.', null);
                 return;
             }
             callback(null, data);
@@ -141,28 +147,4 @@ Check.editCheck = function(dbname, check_id, check_num, check_date, check_amount
     });
 }
 
-Check.deleteCheck = function(dbname, check_id, callback) {
-    db.companydb(dbname).getConnection(function(err, connection) { 
-        if (err) {
-            callback(err, null);
-            return;
-        }
-        
-        var sql = "DELETE FROM CheckInfo WHERE Check_ID = ?"
-        sql = mysql.format(sql, check_id);
-        connection.query(sql, function(error, data) {
-            connection.release();
-            if (error) {
-                callback(error, null);
-                return;
-            }
-            if (data.AffectedRows === 0) {
-                callback('The check was not deleted.', null);
-                return;
-            }
-            callback(null, data);
-        });
-    });
-}
-
-module.exports = Check;
+module.exports = Clerk;

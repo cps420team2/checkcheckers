@@ -16,6 +16,10 @@ post /getusers
 Username:_____
 Ex. .\curl.exe -X POST localhost:3000/getusers -d "Username=apric"
 
+post /getuserbyusername
+Username:_____
+Ex. .\curl.exe -X POST localhost:3000/getuserbyusername -d "Username=apric"
+
 post /getchecks
 Username:_____
 Ex. .\curl.exe -X POST localhost:3000/getchecks -d "Username=apric"

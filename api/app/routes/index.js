@@ -20,75 +20,6 @@ router.post('/', function (req, res, next) {
     res.send({message:"This is the Team 2 db API!"});
 });
 
-/*
-router.get('/search', function (req, res, next) {
-    Item.dosearch(req, res, function(err, obj){
-        res.render('search', obj);
-    });
-});
-
-router.get('/mobile_search', function (req, res, next) {
-    var obj = {};
-    obj.session = req.session;
-    res.render('mobile_search', obj);
-});
-
-router.get('/mobile_searchresult', function (req, res, next) {
-     Item.dosearch(req, res, function(err, obj){
-        if (obj.mobilesearch) {
-            res.redirect('/mobile_search', obj);
-            return;
-        }
-        res.render('mobile_searchresult', obj);
-    });
-});
-
-router.get('/details', function (req, res, next) {
-    Item.details(req, res, function(err, obj) {
-        res.render('details', obj);
-    });
-});
-
-router.get('/logout', function (req, res, next) {
-    req.session.login = false;
-    res.redirect('search');
-});
-
-router.get('/maintain', function (req, res, next) {
-    if (!req.session.login) {
-        var error = {};
-        error.message = 'You do not have permission to edit this book. Please Login.';
-        res.render('error', error);
-        return;
-    }
-    Item.details(req, res, function(err, obj) {
-        res.render('maintain', obj);
-    });
-});
-
-router.post('/maintain', function (req, res, next) {
-    if (!req.session.login) {
-        var error = {};
-        error.message = 'You do not have permission to edit this book. Please Login.';
-        res.render('error', error);
-        return;
-    }
-    if (req.body.btnCancel) {
-        res.redirect('search');
-        return;
-    }
-    if (req.body.btnSave) {
-        Item.updateRecord(req, res, function(err, data) {
-            if (err) {
-                res.render('maintain', data);
-                return;
-            }
-            res.redirect('details?book_id=' + data.book.id);
-        });
-    }
-}); 
-*/
-
 router.post('/login', function (req, res, next) {
     User.checkCred(req.body.Username, req.body.Password, function(err, success) {
         var obj = {};
@@ -128,6 +59,36 @@ router.post('/getusers', function (req, res, next){
         } else {
             res.send({error:err, users:null});
         }
+    });
+});
+
+router.post('/getuserbyusername', function (req, res, next){
+    User.getUserByUsername(req.body.Username, function(err, user){
+        res.send({error:err, user:user});
+    });
+});
+
+router.post('/createuser', function (req, res, next){
+    User.getdb(req.body.Username, function(err, dbname){
+        if (dbname) {
+            User.createUser(dbname, req.body.F_Name, req.body.L_Name, req.body.NewUsername, 
+                req.body.Password, req.body.User_Stat, function(error, user) {
+                    
+                if (user) {
+                    res.send({error:null, user:user});
+                } else {
+                    res.send({error:error, user:null});
+                }
+            });
+        } else {
+            res.send({error:err, user:null});
+        }
+    });
+});
+
+router.post('/deleteuser', function (req, res, next){
+    User.deleteUser(req.body.Username, function(err, user){
+        res.send({error:err, user:user});
     });
 });
 
@@ -184,8 +145,24 @@ router.post('/editcheck', function (req, res, next){
     User.getdb(req.body.Username, function(err, dbname){
         if (dbname) {
             Check.editCheck(dbname, req.body.check_id, req.body.check_num, req.body.check_date, req.body.check_amount, 
-                req.body.clerk_id, req.body.acc_id, function(error, check) {
+                req.body.clerk_id, req.body.acc_id, req.body.check_paid, function(error, check) {
                     
+                if (check) {
+                    res.send({error:null, check:check});
+                } else {
+                    res.send({error:error, check:null});
+                }
+            });
+        } else {
+            res.send({error:err, check:null});
+        }
+    });
+});
+
+router.post('/deletecheck', function (req, res, next){
+    User.getdb(req.body.Username, function(err, dbname){
+        if (dbname) {
+            Check.deleteCheck(dbname, req.body.check_id, function(error, check) {
                 if (check) {
                     res.send({error:null, check:check});
                 } else {

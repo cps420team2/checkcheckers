@@ -67,6 +67,7 @@ User.getinfo = function(username, callback) {
         });
     });
 }
+
 User.getCompUsers = function(company, callback) {
     db.userdb.getConnection(function(err, connection) { 
         if (err) {
@@ -87,6 +88,89 @@ User.getCompUsers = function(company, callback) {
                 return;
             }
             callback(null, data);
+        });
+    });
+}
+
+User.getUserByUsername = function(Username, callback) {
+    db.userdb.getConnection(function(err, connection) { 
+        if (err) {
+            callback(err, null);
+            return;
+        }
+
+        var sql = 'SELECT User_Id, Username, F_Name, L_Name, User_Stat, Company_Name FROM Users WHERE Username = ?';
+        sql = mysql.format(sql, Username);
+        connection.query(sql, function(error, data) {
+            connection.release();
+            if (error) {
+                callback(error, null);
+                return;
+            }
+            if (data.length === 0) {
+                callback('No user found.', null);
+                return;
+            }
+            callback(null, data);
+        });
+    });
+}
+
+User.createUser = function(dbname, F_Name, L_Name, Username, Password, User_Stat, callback) {
+    User.getUserByUsername(Username, function(usererr, userdata){
+        if (userdata) {
+            callback("Username is already in use.", null);
+            return;
+        }
+        if (usererr && usererr !== 'No user found.') {
+            callback(usererr, null);
+            return;
+        }
+
+        db.userdb.getConnection(function(err, connection) { 
+            if (err) {
+                callback(err, null);
+                return;
+            }
+    
+            var sql = 'INSERT INTO Users(F_Name, L_Name, Username, Passwd_Hash, Company_Name, User_Stat) VALUES (?, ?, ?, ?, ?, ?)';
+            sql = mysql.format(sql, [F_Name, L_Name, Username, Password, dbname, User_Stat]);
+            connection.query(sql, function(error, data) {
+                connection.release();
+                if (error) {
+                    callback(error, null);
+                    return;
+                }
+                if (data.AffectedRows === 0) {
+                    callback('No Clerk added.', null);
+                    return;
+                }
+                callback(null, data);
+            });
+        });
+    });
+}
+
+User.deleteUser = function(username, callback) {
+    db.userdb.getConnection(function(err, connection) { 
+        if (err) {
+            callback(err, null);
+            return;
+        }
+
+        var sql = 'DELETE FROM Users WHERE Username = ?';
+        sql = mysql.format(sql, username);
+        connection.query(sql, function(error, data) {
+            connection.release();
+            if (error) {
+                callback(error, null);
+                return;
+            }
+            if (data) {
+                callback(null, data);
+                return;
+            }
+            callback('User not found.', null);
         });
     });
 }
